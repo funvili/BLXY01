@@ -1,0 +1,148 @@
+[gd_scene load_steps=19 format=3 uid="uid://c6l2j7bjyku0f"]
+
+[ext_resource type="Script" path="res://CharacterBody3d.gd" id="1_lcgjd"]
+[ext_resource type="Script" path="res://SpringArm3d.gd" id="2_g1uqq"]
+[ext_resource type="Texture2D" uid="uid://cly87hu8jbn3f" path="res://Map.png" id="3_s5efs"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ep5oc"]
+sky_top_color = Color(0.623529, 0.941176, 1, 1)
+sky_horizon_color = Color(0.811765, 0.970588, 1, 1)
+ground_bottom_color = Color(0.623529, 0.941176, 1, 1)
+ground_horizon_color = Color(0.811765, 0.970588, 1, 1)
+
+[sub_resource type="Sky" id="Sky_rtg1w"]
+sky_material = SubResource("ProceduralSkyMaterial_ep5oc")
+
+[sub_resource type="Environment" id="Environment_vfmhe"]
+background_mode = 2
+sky = SubResource("Sky_rtg1w")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_3rioy"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_61ftx"]
+
+[sub_resource type="VoxelGeneratorNoise2D" id="VoxelGeneratorNoise2D_2gbeu"]
+channel = 0
+noise = SubResource("FastNoiseLite_61ftx")
+
+[sub_resource type="VoxelBlockyModel" id="VoxelBlockyModel_pq8ua"]
+voxel_name = &"air"
+
+[sub_resource type="VoxelBlockyModel" id="VoxelBlockyModel_vt76m"]
+voxel_name = &"grass"
+geometry_type = 1
+collision_aabbs = [AABB(0, 0, 0, 1, 1, 1)]
+cube_geometry_padding_y = null
+cube_tiles_left = Vector2(0, 0)
+cube_tiles_right = Vector2(0, 0)
+cube_tiles_bottom = Vector2(0, 0)
+cube_tiles_top = Vector2(0, 0)
+cube_tiles_back = Vector2(0, 0)
+cube_tiles_front = Vector2(0, 0)
+collision_enabled_0 = true
+
+[sub_resource type="VoxelBlockyModel" id="VoxelBlockyModel_qa14b"]
+voxel_name = &"dirt"
+geometry_type = 1
+collision_aabbs = [AABB(0, 0, 0, 1, 1, 1)]
+cube_geometry_padding_y = null
+cube_tiles_left = Vector2(1, 0)
+cube_tiles_right = Vector2(1, 0)
+cube_tiles_bottom = Vector2(1, 0)
+cube_tiles_top = Vector2(1, 0)
+cube_tiles_back = Vector2(1, 0)
+cube_tiles_front = Vector2(1, 0)
+collision_enabled_0 = true
+
+[sub_resource type="VoxelBlockyModel" id="VoxelBlockyModel_lu0lb"]
+voxel_name = &"stone"
+geometry_type = 1
+collision_aabbs = [AABB(0, 0, 0, 1, 1, 1)]
+cube_geometry_padding_y = null
+cube_tiles_left = Vector2(2, 0)
+cube_tiles_right = Vector2(2, 0)
+cube_tiles_bottom = Vector2(2, 0)
+cube_tiles_top = Vector2(2, 0)
+cube_tiles_back = Vector2(2, 0)
+cube_tiles_front = Vector2(2, 0)
+collision_enabled_0 = true
+
+[sub_resource type="VoxelBlockyModel" id="VoxelBlockyModel_8ta1o"]
+voxel_name = &"sand"
+geometry_type = 1
+collision_aabbs = [AABB(0, 0, 0, 1, 1, 1)]
+cube_geometry_padding_y = null
+cube_tiles_left = Vector2(0, 1)
+cube_tiles_right = Vector2(0, 1)
+cube_tiles_bottom = Vector2(0, 1)
+cube_tiles_top = Vector2(0, 1)
+cube_tiles_back = Vector2(0, 1)
+cube_tiles_front = Vector2(0, 1)
+collision_enabled_0 = true
+
+[sub_resource type="VoxelBlockyModel" id="VoxelBlockyModel_bpkq3"]
+voxel_name = &"water"
+transparent = true
+transparency_index = 1
+geometry_type = 1
+collision_aabbs = [AABB(0, 0, 0, 1, 1, 1)]
+cube_geometry_padding_y = null
+cube_tiles_left = Vector2(1, 1)
+cube_tiles_right = Vector2(1, 1)
+cube_tiles_bottom = Vector2(1, 1)
+cube_tiles_top = Vector2(1, 1)
+cube_tiles_back = Vector2(1, 1)
+cube_tiles_front = Vector2(1, 1)
+collision_enabled_0 = false
+
+[sub_resource type="VoxelBlockyLibrary" id="VoxelBlockyLibrary_k5jhp"]
+atlas_size = 3
+voxels/0 = SubResource("VoxelBlockyModel_pq8ua")
+voxels/1 = SubResource("VoxelBlockyModel_vt76m")
+voxels/2 = SubResource("VoxelBlockyModel_qa14b")
+voxels/3 = SubResource("VoxelBlockyModel_lu0lb")
+voxels/4 = SubResource("VoxelBlockyModel_8ta1o")
+voxels/5 = SubResource("VoxelBlockyModel_bpkq3")
+
+[sub_resource type="VoxelMesherBlocky" id="VoxelMesherBlocky_deaon"]
+library = SubResource("VoxelBlockyLibrary_k5jhp")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bw8jt"]
+transparency = 1
+depth_draw_mode = 1
+albedo_texture = ExtResource("3_s5efs")
+
+[node name="Node3d" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_vfmhe")
+
+[node name="DirectionalLight3d" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+light_energy = 3.0
+shadow_enabled = true
+
+[node name="CharacterBody3d" type="CharacterBody3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 90.8127, 0)
+script = ExtResource("1_lcgjd")
+
+[node name="CsgBox3d" type="CSGBox3D" parent="CharacterBody3d"]
+
+[node name="CollisionShape3d" type="CollisionShape3D" parent="CharacterBody3d"]
+shape = SubResource("SphereShape3D_3rioy")
+
+[node name="SpringArm3d" type="SpringArm3D" parent="CharacterBody3d"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.3)
+spring_length = 7.0
+script = ExtResource("2_g1uqq")
+
+[node name="Camera3d" type="Camera3D" parent="CharacterBody3d/SpringArm3d"]
+
+[node name="VoxelViewer" type="VoxelViewer" parent="CharacterBody3d"]
+
+[node name="VoxelTerrain" type="VoxelTerrain" parent="."]
+generator = SubResource("VoxelGeneratorNoise2D_2gbeu")
+mesher = SubResource("VoxelMesherBlocky_deaon")
+material_override = SubResource("StandardMaterial3D_bw8jt")
